@@ -1,7 +1,7 @@
 from functools import partial
 
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget, QLabel, QWIDGETSIZE_MAX
-from PyQt5 import QtCore
+from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget, QLabel, QWIDGETSIZE_MAX
+from PyQt6 import QtCore
 
 from gui.helpers import prepare_icon, AdjustItems
 
@@ -257,7 +257,7 @@ class MainWidget(QWidget, RevealFields):
             for column_idx in range(self._board_width):
                 game_button = GameButton()
 
-                game_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+                game_button.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
                 game_button_right_click = partial(self._handle_right_click,
                                                      row_idx=row_idx,
                                                      column_idx=column_idx)

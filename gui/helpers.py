@@ -1,5 +1,6 @@
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt6.QtGui import QIcon, QPixmap
 from math import floor
+
 
 def remove_all_widgets(layout):
     """
@@ -23,7 +24,7 @@ def prepare_icon(path_to_icon_image):
 
     icon = QIcon()
     pixmap = QPixmap(path_to_icon_image)
-    icon.addPixmap(pixmap, QIcon.Disabled, QIcon.On)
+    icon.addPixmap(pixmap, QIcon.Mode.Disabled, QIcon.State.On)
 
     return icon
 

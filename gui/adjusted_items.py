@@ -6,10 +6,9 @@ import time
 from math import floor
 from threading import Thread
 
-from PyQt5.Qt import QSize
-from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QFont, QPixmap, QIcon
-from PyQt5.QtWidgets import QSizePolicy, QPushButton, QLabel, QSpinBox
+from PyQt6.QtCore import pyqtSignal, Qt, QSize
+from PyQt6.QtGui import QFont, QPixmap, QIcon
+from PyQt6.QtWidgets import QSizePolicy, QPushButton, QLabel, QSpinBox
 
 import settings
 from gui.helpers import prepare_icon, AdjustItems
@@ -20,7 +19,7 @@ class StartSceneButton(QPushButton, AdjustItems):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         self.setMinimumWidth(settings.MINIMUM_WIDTH_OF_LAYOUT)
         self._resizing_enabled = False
         Thread(target=self._set_resizing).start()
@@ -40,7 +39,8 @@ class StartSceneButton(QPushButton, AdjustItems):
             font_size = self._calculate_font_size(height_ratio=settings.FONT_TO_LABEL_PROPORTION,
                                                   width_ratio= settings.WIDTH_OF_LABEL_TEXT_VERSUS_WIDTH_OF_WHOLE_LABEL_RATIO)
 
-            self.setFont(QFont(font_type, font_size, QFont.Bold))
+            self.setFont(QFont(font_type, font_size, QFont.Weight.Bold))
+
 
 class LogoLabel(QLabel):
 
@@ -55,8 +55,8 @@ class SizeLabel(QLabel, AdjustItems):
         self._resizing_enabled = False
         self._text = None
         Thread(target=self._set_resizing).start()
-        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-        self.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
+        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
 
     def _set_resizing(self):
         self._text = self.text()
@@ -76,15 +76,15 @@ class SizeLabel(QLabel, AdjustItems):
             font_size = self._calculate_font_size(height_ratio=settings.FONT_TO_LABEL_PROPORTION,
                                                   width_ratio=settings.WIDTH_OF_LABEL_TEXT_VERSUS_WIDTH_OF_WHOLE_LABEL_RATIO)
 
-            self.setFont(QFont(font_type, font_size, QFont.Bold))
+            self.setFont(QFont(font_type, font_size, QFont.Weight.Bold))
 
 class SizeSpinBox(QSpinBox, AdjustItems):
     resized = pyqtSignal()
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         self.resized.connect(self._adjust_font)
-        self.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
 
     def resizeEvent(self, evt):
         super().resizeEvent(evt)
@@ -116,13 +116,14 @@ class GameButton(QPushButton):
         self.adjust_icon()
 
     def _initial_config(self):
-        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
 
         initial_icon = prepare_icon(
             path_to_icon_image=settings.IMAGES_WITH_THE_ICONS_OF_FIELDS["NOT_REVEALED"])
         initial_icon.addPixmap(QPixmap(settings.IMAGES_WITH_THE_ICONS_OF_FIELDS["NOT_REVEALED"]),
-                               QIcon.Disabled, QIcon.On)
+                               QIcon.Mode.Disabled, QIcon.State.On)
         self.setIcon(initial_icon)
+
 
     def resizeEvent(self, evt):
         self.resized.emit()

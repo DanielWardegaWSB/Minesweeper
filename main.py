@@ -1,6 +1,6 @@
 import sys
 
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
 
 from gui import MainWidget
 
@@ -10,4 +10,4 @@ if __name__ == '__main__':
     w = MainWidget()
     w.setWindowTitle("Minesweeper")
     w.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
