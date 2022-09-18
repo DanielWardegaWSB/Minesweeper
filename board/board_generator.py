@@ -1,17 +1,11 @@
-# importy pozmieniac
 from random import choice
-from settings import VALUES_OF_BOARD_FIELDS
+
 from board.helpers import InitialValuesOfField
+from settings import VALUES_OF_BOARD_FIELDS
 
 
-# zmienic nazwe
 def pos_correct(height, width, x, y):
-    if 0 <= x < height and 0 <= y < width:
-        return True
-    return False
-
-
-# przepisać to na klase
+    return 0 <= x < height and 0 <= y < width
 
 
 class BoardGenerator:

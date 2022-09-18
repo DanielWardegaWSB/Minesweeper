@@ -1,5 +1,6 @@
-from PyQt6.QtGui import QIcon, QPixmap
 from math import floor
+
+from PyQt6.QtGui import QIcon, QPixmap
 
 
 def remove_all_widgets(layout):

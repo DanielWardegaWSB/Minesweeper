@@ -1,9 +1,7 @@
 from functools import partial
 
-from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget, QLabel, QWIDGETSIZE_MAX
 from PyQt6 import QtCore
-
-from gui.helpers import prepare_icon, AdjustItems
+from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget, QLabel, QWIDGETSIZE_MAX
 
 import settings
 from board.board_generator import BoardGenerator
@@ -14,6 +12,7 @@ from gui.adjusted_items import (
     SizeSpinBox,
     GameButton,
 )
+from gui.helpers import prepare_icon, AdjustItems
 from gui.helpers import remove_all_widgets
 from gui.revealing_fields import RevealFields
 
