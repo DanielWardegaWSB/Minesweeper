@@ -26,12 +26,10 @@ class RevealFields:
         self._rev_all = False
 
     def _is_pos_correct(self, x, y):
-        if 0 <= x < self._board_height and 0 <= y < self._board_width:
-            return True
-        return False
+        return 0 <= x < self._board_height and 0 <= y < self._board_width
 
     def _reveal_neighbours(self, x, y):
-        if self._is_pos_correct(x, y) is True:
+        if self._is_pos_correct(x, y):
             if self._board_array[x][y].revealed is False and self._board_array[x][y].flagged is False:
                 if self._board_array[x][y].value in map(str, range(1, 9)):
                     self._reveal_specyfied_field(x, y)
