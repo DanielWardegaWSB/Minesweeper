@@ -7,7 +7,13 @@ from gui.helpers import prepare_icon, AdjustItems
 
 import settings
 from board.board_generator import BoardGenerator
-from gui.adjusted_items import StartSceneButton, LogoLabel, SizeLabel, SizeSpinBox, GameButton
+from gui.adjusted_items import (
+    StartSceneButton,
+    LogoLabel,
+    SizeLabel,
+    SizeSpinBox,
+    GameButton,
+)
 from gui.helpers import remove_all_widgets
 from gui.revealing_fields import RevealFields
 
@@ -15,9 +21,15 @@ from gui.revealing_fields import RevealFields
 class MainWidget(QWidget, RevealFields):
     def __init__(self):
         QWidget.__init__(self)
-        RevealFields.__init__(self,
-                              path_to_icons_with_values=settings.SETTINGS_OF_FIELDS_WITH_VALUES["PATH_TO_ICONS"],
-                              file_format_of_icons_with_values=settings.SETTINGS_OF_FIELDS_WITH_VALUES["ICON_FILE_FORMAT"])
+        RevealFields.__init__(
+            self,
+            path_to_icons_with_values=settings.SETTINGS_OF_FIELDS_WITH_VALUES[
+                "PATH_TO_ICONS"
+            ],
+            file_format_of_icons_with_values=settings.SETTINGS_OF_FIELDS_WITH_VALUES[
+                "ICON_FILE_FORMAT"
+            ],
+        )
         self._main_horizontal_layout = QHBoxLayout(self)
         self._left_layout = QVBoxLayout()
         self._widget_of_left_layout = QWidget()
@@ -48,17 +60,17 @@ class MainWidget(QWidget, RevealFields):
     def _create_a_time_label(self):
         hours_str, minutes_str, seconds_str = "", "", ""
 
-        if (self._hours < 10):
+        if self._hours < 10:
             hours_str = "0" + str(self._hours)
         else:
             hours_str = str(self._hours)
 
-        if (self._minutes < 10):
+        if self._minutes < 10:
             minutes_str = "0" + str(self._minutes)
         else:
             minutes_str = str(self._minutes)
 
-        if (self._seconds < 10):
+        if self._seconds < 10:
             seconds_str = "0" + str(self._seconds)
         else:
             seconds_str = str(self._seconds)
@@ -71,7 +83,7 @@ class MainWidget(QWidget, RevealFields):
         self._game_time += 1
         self._hours = self._game_time // 3600
         self._minutes = self._game_time // 60
-        self._seconds = self._game_time - 3600*self._hours - 60*self._minutes
+        self._seconds = self._game_time - 3600 * self._hours - 60 * self._minutes
 
         time_str = self._create_a_time_label()
         self._time_label.setText(time_str)
@@ -86,23 +98,25 @@ class MainWidget(QWidget, RevealFields):
         self._hours = 0
         self._game_time = 0
 
-    def _go_to_scene(self,
-                     scene_function,
-                     remove_items_left_layout=True,
-                     remove_items_right_layout=True):
+    def _go_to_scene(
+        self,
+        scene_function,
+        remove_items_left_layout=True,
+        remove_items_right_layout=True,
+    ):
 
         """
-            If 'remove_items_left_layout' is set as true
-            '_go_to_scene' function removes all visible elements
-            contained in self._left_layout
+        If 'remove_items_left_layout' is set as true
+        '_go_to_scene' function removes all visible elements
+        contained in self._left_layout
 
-            If 'remove_items_right_layout' is set as true
-            '_go_to_scene' function removes all visible elements
-            contained in self._right_layout
+        If 'remove_items_right_layout' is set as true
+        '_go_to_scene' function removes all visible elements
+        contained in self._right_layout
 
-            '_go_to_scene' function always execute
-            a specific function for a given scene,
-            which is passed as an argument('scene_function')
+        '_go_to_scene' function always execute
+        a specific function for a given scene,
+        which is passed as an argument('scene_function')
         """
         self._reset_time()
 
@@ -133,27 +147,30 @@ class MainWidget(QWidget, RevealFields):
         self._widget_of_right_layout.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)
         self._widget_of_right_layout.setMinimumSize(0, 0)
 
-
         self.setFixedWidth(whole_width_tmp)
         self.setFixedHeight(whole_height_tmp)
         self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)
 
     def _game_scene(self):
         """
-            We call this function to display the scene
-            where we play minesweeper
+        We call this function to display the scene
+        where we play minesweeper
         """
         self._matrix_of_buttons.clear()
         self._score = self._number_of_mines
         self._number_of_reveal_fields = 0
         self._create_game_board()
 
-        label_with_text_about_score = SizeLabel(settings.INFORMATIVE_TEXTS["INFORM_ABOUT_THE_SCORE"])
+        label_with_text_about_score = SizeLabel(
+            settings.INFORMATIVE_TEXTS["INFORM_ABOUT_THE_SCORE"]
+        )
         self._left_layout.addWidget(label_with_text_about_score)
         self._score_label = SizeLabel(str(self._score))
         self._left_layout.addWidget(self._score_label)
 
-        label_with_text_about_time = SizeLabel(settings.INFORMATIVE_TEXTS["INFORM_ABOUT_THE_TIME"])
+        label_with_text_about_time = SizeLabel(
+            settings.INFORMATIVE_TEXTS["INFORM_ABOUT_THE_TIME"]
+        )
         self._left_layout.addWidget(label_with_text_about_time)
         time_str = self._create_a_time_label()
         self._time_label = SizeLabel(time_str)
@@ -161,61 +178,74 @@ class MainWidget(QWidget, RevealFields):
         self._timer.start(1000)
 
         end_game_button = StartSceneButton(settings.TEXT_ON_BUTTONS["BACK_TO_MENU"])
-        end_game_button_click_function = lambda: self._go_to_scene(scene_function=self.start_scene)
+        end_game_button_click_function = lambda: self._go_to_scene(
+            scene_function=self.start_scene
+        )
         end_game_button.clicked.connect(end_game_button_click_function)
         self._left_layout.addWidget(end_game_button)
 
-
-
     def final_message_scene(self, message):
         """
-            When the game is over we call this function
-            to display scene with final message('message')
+        When the game is over we call this function
+        to display scene with final message('message')
         """
         label_with_text_about_score = SizeLabel(message)
         self._left_layout.addWidget(label_with_text_about_score)
 
-        label_with_text_about_time = SizeLabel(settings.INFORMATIVE_TEXTS["INFORM_ABOUT_THE_TIME"])
+        label_with_text_about_time = SizeLabel(
+            settings.INFORMATIVE_TEXTS["INFORM_ABOUT_THE_TIME"]
+        )
         self._left_layout.addWidget(label_with_text_about_time)
         self.t_label = SizeLabel(str(self._last_game_time_label))
         self._left_layout.addWidget(self.t_label)
 
-
         end_game_button = StartSceneButton(settings.TEXT_ON_BUTTONS["BACK_TO_MENU"])
-        end_game_button_click_function = lambda: self._go_to_scene(scene_function=self.start_scene)
+        end_game_button_click_function = lambda: self._go_to_scene(
+            scene_function=self.start_scene
+        )
         end_game_button.clicked.connect(end_game_button_click_function)
         self._left_layout.addWidget(end_game_button)
 
-
     def _game_button_click(self, row_idx, column_idx):
         """
-           This function determines an action
-           for particular button with specified indexes
-           (row_idx, column_idx)
+        This function determines an action
+        for particular button with specified indexes
+        (row_idx, column_idx)
         """
 
         if self._is_flagged(row_idx, column_idx) is False:
             if self._is_mine(row_idx, column_idx):
                 self._reveal_all()
                 final_scene = lambda: self.final_message_scene(
-                    message=settings.MESSAGES_WIT_THE_RESULTS_OF_THE_GAME["LOSE"])
-                self._go_to_scene(scene_function=final_scene,
-                                  remove_items_left_layout=True,
-                                  remove_items_right_layout=False)
+                    message=settings.MESSAGES_WIT_THE_RESULTS_OF_THE_GAME["LOSE"]
+                )
+                self._go_to_scene(
+                    scene_function=final_scene,
+                    remove_items_left_layout=True,
+                    remove_items_right_layout=False,
+                )
 
             else:
                 self._reveal_neighbours(row_idx, column_idx)
-                if self._number_of_reveal_fields == self._board_height * self._board_width - self._number_of_mines:
+                if (
+                    self._number_of_reveal_fields
+                    == self._board_height * self._board_width - self._number_of_mines
+                ):
                     self._reveal_all()
                     final_scene = lambda: self.final_message_scene(
-                        message=settings.MESSAGES_WIT_THE_RESULTS_OF_THE_GAME["WIN"])
-                    self._go_to_scene(scene_function=final_scene,
-                                      remove_items_left_layout=True,
-                                      remove_items_right_layout=False)
+                        message=settings.MESSAGES_WIT_THE_RESULTS_OF_THE_GAME["WIN"]
+                    )
+                    self._go_to_scene(
+                        scene_function=final_scene,
+                        remove_items_left_layout=True,
+                        remove_items_right_layout=False,
+                    )
 
     def _handle_right_click(self, row_idx, column_idx):
         if self._board_array[row_idx][column_idx].flagged == True:
-            path_to_icon_image = settings.IMAGES_WITH_THE_ICONS_OF_FIELDS["NOT_REVEALED"]
+            path_to_icon_image = settings.IMAGES_WITH_THE_ICONS_OF_FIELDS[
+                "NOT_REVEALED"
+            ]
             icon = prepare_icon(path_to_icon_image=path_to_icon_image)
             self._matrix_of_buttons[row_idx][column_idx].setIcon(icon)
             self._matrix_of_buttons[row_idx][column_idx].adjust_icon()
@@ -234,24 +264,26 @@ class MainWidget(QWidget, RevealFields):
 
     def _create_game_board(self):
         """
-            This function creates the game board
-            with previously given dimensions(self._board_height, self._board_width).
-            The game board contains a specific number of mines(self._number_of_mines).
-            The board consists of buttons (GameButton).
+        This function creates the game board
+        with previously given dimensions(self._board_height, self._board_width).
+        The game board contains a specific number of mines(self._number_of_mines).
+        The board consists of buttons (GameButton).
         """
 
         self._board_array = BoardGenerator.get_game_board(
             height=self._board_height,
             width=self._board_width,
-            mine_amount=self._number_of_mines
+            mine_amount=self._number_of_mines,
         )
 
-        minimum_height_of_single_button = \
-            (settings.GAME_BUTTONS_VERSUS_RIGHT_LAYOUT_RATIO *
-             settings.MINIMUM_HEIGHT_OF_THE_WHOLE_APPLICATION) // self._board_height
-        minimum_width_of_single_button =\
-            (settings.GAME_BUTTONS_VERSUS_RIGHT_LAYOUT_RATIO *
-             settings.MINIMUM_WIDTH_OF_LAYOUT) // self._board_width
+        minimum_height_of_single_button = (
+            settings.GAME_BUTTONS_VERSUS_RIGHT_LAYOUT_RATIO
+            * settings.MINIMUM_HEIGHT_OF_THE_WHOLE_APPLICATION
+        ) // self._board_height
+        minimum_width_of_single_button = (
+            settings.GAME_BUTTONS_VERSUS_RIGHT_LAYOUT_RATIO
+            * settings.MINIMUM_WIDTH_OF_LAYOUT
+        ) // self._board_width
 
         for row_idx in range(self._board_height):
             row_of_buttons_gui = QHBoxLayout()
@@ -259,17 +291,19 @@ class MainWidget(QWidget, RevealFields):
             for column_idx in range(self._board_width):
                 game_button = GameButton()
 
-                game_button.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
-                game_button_right_click = partial(self._handle_right_click,
-                                                     row_idx=row_idx,
-                                                     column_idx=column_idx)
+                game_button.setContextMenuPolicy(
+                    QtCore.Qt.ContextMenuPolicy.CustomContextMenu
+                )
+                game_button_right_click = partial(
+                    self._handle_right_click, row_idx=row_idx, column_idx=column_idx
+                )
                 game_button.customContextMenuRequested.connect(game_button_right_click)
 
                 game_button.setMinimumHeight(minimum_height_of_single_button)
                 game_button.setMinimumWidth(minimum_width_of_single_button)
-                game_button_click_function = partial(self._game_button_click,
-                                                     row_idx=row_idx,
-                                                     column_idx=column_idx)
+                game_button_click_function = partial(
+                    self._game_button_click, row_idx=row_idx, column_idx=column_idx
+                )
                 game_button.clicked.connect(game_button_click_function)
                 row_of_buttons_list.append(game_button)
                 row_of_buttons_gui.addWidget(game_button)
@@ -279,50 +313,58 @@ class MainWidget(QWidget, RevealFields):
 
     def _mine_amount_scene(self):
         """
-            We call this function to display the scene
-            with determining the number of mines
+        We call this function to display the scene
+        with determining the number of mines
         """
 
-        number_of_mines_label = SizeLabel(settings.INFORMATIVE_TEXTS["ENTER_THE_NUMBER_OF_MINES"])
+        number_of_mines_label = SizeLabel(
+            settings.INFORMATIVE_TEXTS["ENTER_THE_NUMBER_OF_MINES"]
+        )
         self._left_layout.addWidget(number_of_mines_label)
 
         minimum_number_of_mines = settings.MINIMUM_AMOUNT_OF_MINES
         maximum_number_of_mines = (self._board_height * self._board_width) - 1
 
-        number_of_mines_spin_box = SizeSpinBox(minimum=minimum_number_of_mines,
-                                               maximum=maximum_number_of_mines)
+        number_of_mines_spin_box = SizeSpinBox(
+            minimum=minimum_number_of_mines, maximum=maximum_number_of_mines
+        )
         self._left_layout.addWidget(number_of_mines_spin_box)
-        default_number_of_mines = int((minimum_number_of_mines + maximum_number_of_mines) ** 0.5)
+        default_number_of_mines = int(
+            (minimum_number_of_mines + maximum_number_of_mines) ** 0.5
+        )
         number_of_mines_spin_box.setValue(default_number_of_mines)
 
         next_button = StartSceneButton(settings.TEXT_ON_BUTTONS["NEXT_BUTTON"])
         next_button_click_function = lambda: [
-            self._get_number_of_mines(number_of_mines_spin_box=number_of_mines_spin_box),
-            self._go_to_scene(scene_function=self._game_scene)]
+            self._get_number_of_mines(
+                number_of_mines_spin_box=number_of_mines_spin_box
+            ),
+            self._go_to_scene(scene_function=self._game_scene),
+        ]
         next_button.clicked.connect(next_button_click_function)
         self._left_layout.addWidget(next_button)
 
         back_button = StartSceneButton(settings.TEXT_ON_BUTTONS["BACK_BUTTON"])
-        back_button_click_function = lambda: self._go_to_scene(scene_function=self._sapper_size_board_scene,
-                                                               remove_items_left_layout=True,
-                                                               remove_items_right_layout=False)
+        back_button_click_function = lambda: self._go_to_scene(
+            scene_function=self._sapper_size_board_scene,
+            remove_items_left_layout=True,
+            remove_items_right_layout=False,
+        )
         back_button.clicked.connect(back_button_click_function)
         self._left_layout.addWidget(back_button)
 
-    def _get_board_dimensions(self,
-                              height_spin_box,
-                              width_spin_box):
+    def _get_board_dimensions(self, height_spin_box, width_spin_box):
         """
-            This function assigns height and width from spin boxes
-            to 'self._board_height' and 'self._board_width' variables
+        This function assigns height and width from spin boxes
+        to 'self._board_height' and 'self._board_width' variables
         """
         self._board_height = height_spin_box.value()
         self._board_width = width_spin_box.value()
 
     def _get_number_of_mines(self, number_of_mines_spin_box):
         """
-            This function assigns number of mines from spin box
-            to 'self._number_of_mines' variable
+        This function assigns number of mines from spin box
+        to 'self._number_of_mines' variable
         """
         self._number_of_mines = number_of_mines_spin_box.value()
         self._number_of_placed_flags = self._number_of_mines
@@ -330,21 +372,25 @@ class MainWidget(QWidget, RevealFields):
     def _sapper_size_board_scene(self):
 
         """
-            We call this function to display the scene
-            with determining the height and length of the game board
+        We call this function to display the scene
+        with determining the height and length of the game board
         """
 
         height_label = SizeLabel(settings.INFORMATIVE_TEXTS["ENTER_THE_HEIGHT"])
         self._left_layout.addWidget(height_label)
-        height_spin_box = SizeSpinBox(minimum=settings.BOARD_SIZE["HEIGHT_MIN"],
-                                      maximum=settings.BOARD_SIZE["HEIGHT_MAX"])
+        height_spin_box = SizeSpinBox(
+            minimum=settings.BOARD_SIZE["HEIGHT_MIN"],
+            maximum=settings.BOARD_SIZE["HEIGHT_MAX"],
+        )
 
         self._left_layout.addWidget(height_spin_box)
 
         width_label = SizeLabel(settings.INFORMATIVE_TEXTS["ENTER_THE_WIDTH"])
         self._left_layout.addWidget(width_label)
-        width_spin_box = SizeSpinBox(minimum=settings.BOARD_SIZE["WIDTH_MIN"],
-                                     maximum=settings.BOARD_SIZE["WIDTH_MAX"])
+        width_spin_box = SizeSpinBox(
+            minimum=settings.BOARD_SIZE["WIDTH_MIN"],
+            maximum=settings.BOARD_SIZE["WIDTH_MAX"],
+        )
         self._left_layout.addWidget(width_spin_box)
 
         if self._board_height:
@@ -352,24 +398,32 @@ class MainWidget(QWidget, RevealFields):
             width_spin_box.setValue(self._board_width)
 
         next_button = StartSceneButton(settings.TEXT_ON_BUTTONS["NEXT_BUTTON"])
-        next_button_click_function = lambda: [self._get_board_dimensions(height_spin_box=height_spin_box,
-                                                                         width_spin_box=width_spin_box),
-                                              self._go_to_scene(scene_function=self._mine_amount_scene,
-                                                                remove_items_left_layout=True,
-                                                                remove_items_right_layout=False)]
+        next_button_click_function = lambda: [
+            self._get_board_dimensions(
+                height_spin_box=height_spin_box, width_spin_box=width_spin_box
+            ),
+            self._go_to_scene(
+                scene_function=self._mine_amount_scene,
+                remove_items_left_layout=True,
+                remove_items_right_layout=False,
+            ),
+        ]
         next_button.clicked.connect(next_button_click_function)
         self._left_layout.addWidget(next_button)
 
         back_button = StartSceneButton(settings.TEXT_ON_BUTTONS["BACK_BUTTON"])
-        back_button_click_function = lambda: [self._get_board_dimensions(height_spin_box=height_spin_box,
-                                                                         width_spin_box=width_spin_box),
-                                              self._go_to_scene(scene_function=self.start_scene)]
+        back_button_click_function = lambda: [
+            self._get_board_dimensions(
+                height_spin_box=height_spin_box, width_spin_box=width_spin_box
+            ),
+            self._go_to_scene(scene_function=self.start_scene),
+        ]
         back_button.clicked.connect(back_button_click_function)
         self._left_layout.addWidget(back_button)
 
     def _initial_widget_config(self):
         """
-            The function contains settings for the whole window
+        The function contains settings for the whole window
         """
         self.setStyleSheet(settings.MAIN_WINDOW_STYLES)
         self.setMinimumHeight(settings.MINIMUM_HEIGHT_OF_THE_WHOLE_APPLICATION)
@@ -381,14 +435,16 @@ class MainWidget(QWidget, RevealFields):
     def start_scene(self):
 
         """
-            We call this function to display the start scene
+        We call this function to display the start scene
         """
 
         # Creating "start" and "exit" buttons
         start_button = StartSceneButton(settings.TEXT_ON_BUTTONS["START_BUTTON"])
-        start_button_click_function = lambda: self._go_to_scene(scene_function=self._sapper_size_board_scene,
-                                                                remove_items_left_layout=True,
-                                                                remove_items_right_layout=False)
+        start_button_click_function = lambda: self._go_to_scene(
+            scene_function=self._sapper_size_board_scene,
+            remove_items_left_layout=True,
+            remove_items_right_layout=False,
+        )
         start_button.clicked.connect(start_button_click_function)
         self._left_layout.addWidget(start_button)
 

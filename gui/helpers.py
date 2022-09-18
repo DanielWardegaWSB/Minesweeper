@@ -4,8 +4,8 @@ from math import floor
 
 def remove_all_widgets(layout):
     """
-        This function removes all widgets from
-        layout passed as an argument.
+    This function removes all widgets from
+    layout passed as an argument.
     """
     while layout.count():
         child = layout.takeAt(0)
@@ -17,9 +17,9 @@ def remove_all_widgets(layout):
 
 def prepare_icon(path_to_icon_image):
     """
-        This function prepares QIcon with
-        an image whose path was passed as an argument ('path_to_icon_image')
-        Icon images should be the same no matter a button is disabled or not.
+    This function prepares QIcon with
+    an image whose path was passed as an argument ('path_to_icon_image')
+    Icon images should be the same no matter a button is disabled or not.
     """
 
     icon = QIcon()

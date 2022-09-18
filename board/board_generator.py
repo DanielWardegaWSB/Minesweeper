@@ -10,6 +10,7 @@ def pos_correct(height, width, x, y):
         return True
     return False
 
+
 # przepisać to na klase
 
 
@@ -47,28 +48,36 @@ class BoardGenerator:
             for y in range(0, self.width):
                 mines_around = 0
                 if (pos_correct(self.height, self.width, x - 1, y) is True) and (
-                        board[x - 1][y].value == VALUES_OF_BOARD_FIELDS["BOMB"]):
+                    board[x - 1][y].value == VALUES_OF_BOARD_FIELDS["BOMB"]
+                ):
                     mines_around += 1
                 if (pos_correct(self.height, self.width, x - 1, y - 1) is True) and (
-                        board[x - 1][y - 1].value == VALUES_OF_BOARD_FIELDS["BOMB"]):
+                    board[x - 1][y - 1].value == VALUES_OF_BOARD_FIELDS["BOMB"]
+                ):
                     mines_around += 1
                 if (pos_correct(self.height, self.width, x, y - 1) is True) and (
-                        board[x][y - 1].value == VALUES_OF_BOARD_FIELDS["BOMB"]):
+                    board[x][y - 1].value == VALUES_OF_BOARD_FIELDS["BOMB"]
+                ):
                     mines_around += 1
                 if (pos_correct(self.height, self.width, x + 1, y - 1) is True) and (
-                        board[x + 1][y - 1].value == VALUES_OF_BOARD_FIELDS["BOMB"]):
+                    board[x + 1][y - 1].value == VALUES_OF_BOARD_FIELDS["BOMB"]
+                ):
                     mines_around += 1
                 if (pos_correct(self.height, self.width, x + 1, y) is True) and (
-                        board[x + 1][y].value == VALUES_OF_BOARD_FIELDS["BOMB"]):
+                    board[x + 1][y].value == VALUES_OF_BOARD_FIELDS["BOMB"]
+                ):
                     mines_around += 1
                 if (pos_correct(self.height, self.width, x + 1, y + 1) is True) and (
-                        board[x + 1][y + 1].value == VALUES_OF_BOARD_FIELDS["BOMB"]):
+                    board[x + 1][y + 1].value == VALUES_OF_BOARD_FIELDS["BOMB"]
+                ):
                     mines_around += 1
                 if (pos_correct(self.height, self.width, x, y + 1) is True) and (
-                        board[x][y + 1].value == VALUES_OF_BOARD_FIELDS["BOMB"]):
+                    board[x][y + 1].value == VALUES_OF_BOARD_FIELDS["BOMB"]
+                ):
                     mines_around += 1
                 if (pos_correct(self.height, self.width, x - 1, y + 1) is True) and (
-                        board[x - 1][y + 1].value == VALUES_OF_BOARD_FIELDS["BOMB"]):
+                    board[x - 1][y + 1].value == VALUES_OF_BOARD_FIELDS["BOMB"]
+                ):
                     mines_around += 1
 
                 board[x][y].nearby_mines = mines_around
@@ -94,7 +103,9 @@ class BoardGenerator:
         )
         board = board_generator.get_initial_board()
         indexes_of_fields = board_generator.get_indexes_of_fields()
-        board_generator.add_mines(board=board, indexes_of_fields=indexes_of_fields, mine_amount=mine_amount)
+        board_generator.add_mines(
+            board=board, indexes_of_fields=indexes_of_fields, mine_amount=mine_amount
+        )
         board_generator.add_nearby_mines(board=board)
         board_generator.set_values_for_non_bomb_fields(board=board)
         return board
