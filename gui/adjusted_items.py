@@ -48,6 +48,7 @@ class LogoLabel(QLabel):
         super().__init__(*args, **kwargs)
         self.setStyleSheet(settings.START_LOGO_IMAGE_STYLES)
 
+
 class SizeLabel(QLabel, AdjustItems):
     resized = pyqtSignal()
     def __init__(self, *args, **kwargs):
@@ -78,6 +79,7 @@ class SizeLabel(QLabel, AdjustItems):
 
             self.setFont(QFont(font_type, font_size, QFont.Weight.Bold))
 
+
 class SizeSpinBox(QSpinBox, AdjustItems):
     resized = pyqtSignal()
     def __init__(self, *args, **kwargs):
@@ -99,6 +101,7 @@ class SizeSpinBox(QSpinBox, AdjustItems):
                                                                         font_family= font_type)
         self.setStyleSheet(styles_of_font)
 
+
 class GameButton(QPushButton):
     resized = pyqtSignal()
 
@@ -107,7 +110,6 @@ class GameButton(QPushButton):
         self._resizing_enabled = False
         Thread(target=self._set_resizing).start()
         self._initial_config()
-
 
     def _set_resizing(self):
         self.resized.connect(self.adjust_icon)
@@ -123,7 +125,6 @@ class GameButton(QPushButton):
         initial_icon.addPixmap(QPixmap(settings.IMAGES_WITH_THE_ICONS_OF_FIELDS["NOT_REVEALED"]),
                                QIcon.Mode.Disabled, QIcon.State.On)
         self.setIcon(initial_icon)
-
 
     def resizeEvent(self, evt):
         self.resized.emit()

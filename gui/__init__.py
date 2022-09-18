@@ -6,7 +6,7 @@ from PyQt6 import QtCore
 from gui.helpers import prepare_icon, AdjustItems
 
 import settings
-from board.board_generator import generate_board
+from board.board_generator import BoardGenerator
 from gui.adjusted_items import StartSceneButton, LogoLabel, SizeLabel, SizeSpinBox, GameButton
 from gui.helpers import remove_all_widgets
 from gui.revealing_fields import RevealFields
@@ -240,9 +240,11 @@ class MainWidget(QWidget, RevealFields):
             The board consists of buttons (GameButton).
         """
 
-        self._board_array = generate_board(height=self._board_height,
-                                           width=self._board_width,
-                                           mine_amount=self._number_of_mines)
+        self._board_array = BoardGenerator.get_game_board(
+            height=self._board_height,
+            width=self._board_width,
+            mine_amount=self._number_of_mines
+        )
 
         minimum_height_of_single_button = \
             (settings.GAME_BUTTONS_VERSUS_RIGHT_LAYOUT_RATIO *
