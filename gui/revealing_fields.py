@@ -26,9 +26,8 @@ class RevealFields:
         self._rev_all = False
 
     def _is_pos_correct(self, x, y):
-        if x >= 0 and x < self._board_height:
-            if y >= 0 and y < self._board_width:
-                return True
+        if 0 <= x < self._board_height and 0 <= y < self._board_width:
+            return True
         return False
 
     def _reveal_neighbours(self, x, y):
@@ -36,7 +35,6 @@ class RevealFields:
             if self._board_array[x][y].revealed is False and self._board_array[x][y].flagged is False:
                 if self._board_array[x][y].value in map(str, range(1, 9)):
                     self._reveal_specyfied_field(x, y)
-                    return
 
                 if self._board_array[x][y].value == settings.VALUES_OF_BOARD_FIELDS["INITIAL_VALUE_OF_THE_FIELD"]:
                     self._reveal_specyfied_field(x, y)
@@ -49,9 +47,6 @@ class RevealFields:
                     self._reveal_neighbours(x + 1, y + 1)
                     self._reveal_neighbours(x, y + 1)
                     self._reveal_neighbours(x - 1, y + 1)
-                return
-            return
-        return
 
     def _reveal_specyfied_field(self, x, y):
         if self._rev_all is True:
@@ -74,8 +69,6 @@ class RevealFields:
             self._matrix_of_buttons[x][y].adjust_icon()
             self._matrix_of_buttons[x][y].setEnabled(False)
             self._board_array[x][y].revealed = True
-        else:
-            return
 
     def update_score(self, field_value):
         self._score += int(field_value)
@@ -92,9 +85,7 @@ class RevealFields:
                                                  y=column_idx,)
 
     def _is_mine(self, x, y):
-        if self._board_array [x][y].value == settings.VALUES_OF_BOARD_FIELDS["BOMB"]:
-            return True
-        return False
+        return self._board_array [x][y].value == settings.VALUES_OF_BOARD_FIELDS["BOMB"]
 
     def _is_flagged(self, x, y):
         if self._board_array [x][y].flagged is True:
